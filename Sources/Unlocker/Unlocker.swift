@@ -31,9 +31,11 @@ public struct Unlocker: View {
             // Slider
             ZStack(alignment: .leading) {
                 
+                // Rectangle Slider
                 Rectangle()
-                    .frame(width: abs(geo.size.width * CGFloat(minPercentage / 100)))
+                    .frame(width: abs(geo.size.width * CGFloat(percentage / 100)))
             } //: Z
+            .contentShape(Path(CGRect(origin: .zero, size: geo.size)))
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged({ value in
@@ -44,55 +46,47 @@ public struct Unlocker: View {
                     })
             )
         } //: G
+        .onAppear {
+            percentage = minPercentage
+        }
     }
     
 }
 
 extension Unlocker {
     
-    // 슬라이더 변경 감지 처리
+    // Slider OnChange
     private func onChanged(with value: DragGesture.Value, geoProxy: GeometryProxy) {
         
+        // Dragged to the right
         if value.translation.width > 0 && shouldChange {
-            
-            if percentage >= 25.0 {
-                
+            if percentage >= minPercentage {
                 DispatchQueue.main.async {
                     withAnimation(.easeOut) {
-                        percentage = min(max(minPercentage, Float(value.location.x / geoProxy.size.width * 100)), 100)
+                        // change percentage value
+                        self.percentage = min(max(self.minPercentage, Float(value.location.x / geoProxy.size.width * 100)), 100)
                     }
                 }
             } else {
-                
+                // Less than min
                 DispatchQueue.main.async {
                     withAnimation(.easeOut) {
-                        percentage = 25.0
+                        // reset
+                        self.percentage = self.minPercentage
                     }
                 }
             }
         }
         
+        // Dragged to the left / shouldn't change
         if value.translation.width < 0 || !shouldChange {
-            
             DispatchQueue.main.async {
                 withAnimation(.easeOut) {
-                    percentage = 25.0
+                    // reset
+                    self.percentage = self.minPercentage
                 }
             }
-            
         }
     }
     
 }
-
-#if DEBUG
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            Unlocker(percentage: .constant(0.0))
-                .frame(height: 60)
-                .padding()
-        }
-    }
-}
-#endif
