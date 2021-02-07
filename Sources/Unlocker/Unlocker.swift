@@ -32,3 +32,13 @@ public struct Unlocker: View {
     }
     
 }
+
+#if DEBUG
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            Unlocker(percentage: .constant(0.0))
+        }
+    }
+}
+#endif
