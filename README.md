@@ -105,7 +105,7 @@ struct CapsuleShape: View {
         }
         .background(Color.gray)
         /*
-         You can smiply make the slider RoundedRectangle
+         You can smiply make the slider capsule shape
          with `.clipShape(Capsule())`
          */
         .clipShape(Capsule())
