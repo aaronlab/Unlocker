@@ -33,7 +33,7 @@ https://github.com/aaronLab/Unlocker
 ## Usage
 
 - Import `Unlocker` on top of the file.
-- Put `Unlocker` with its parameters into the parenthesis.
+- Put `Unlocker` with its parameters in the parenthesis.
 - Declare:
   ```Swift
   Unlocker(disabled: Binding<Bool>, percentage: Binding<Float>, minPercentage: Float = 25.0, threshold: Float = 50.0, foregroundColor: Color = .primary, completion: (() -> Void)? = nil)
