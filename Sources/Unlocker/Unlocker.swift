@@ -2,6 +2,8 @@ import SwiftUI
 
 public struct Unlocker: View {
     
+    // Disable
+    @Binding var disabled: Bool
     // Percentage
     @Binding var percentage: Float
     private let minPercentage: Float
@@ -10,15 +12,15 @@ public struct Unlocker: View {
     // Action
     private let completion: (() -> Void)?
     
-    // State
-    @State private var disabled: Bool = false
     
     public init(
+        disabled: Binding<Bool>,
         percentage: Binding<Float>,
         minPercentage: Float = 25.0,
         threshold: Float = 50.0,
         completion: (() -> Void)? = nil
     ) {
+        self._disabled = disabled
         self._percentage = percentage
         self.minPercentage = minPercentage
         self.threshold = threshold
@@ -114,10 +116,10 @@ extension Unlocker {
                 }
             }
             
-            // Reset disabled
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                disabled = false
-            }
+//            // Reset disabled
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                disabled = false
+//            }
         } else {
             
             // Reset slider
