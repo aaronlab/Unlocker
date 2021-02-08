@@ -117,7 +117,7 @@ struct CapsuleShape: View {
 
 ## More Examples
 
-- See example files [here](https://github.com/aaronLab/Unlocker/tree/master/Examples/Examples)
+- See more examples [here](https://github.com/aaronLab/Unlocker/tree/master/Examples/Examples)
 
 ## License
 
