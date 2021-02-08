@@ -6,7 +6,9 @@
 
 # Unlocker
 
-Unlocker is a simple slider library for [SwiftUI](https://developer.apple.com/xcode/swiftui/), which can look like `Slide to Unlock`. You can use this library for the payment as well as wherever you want easily.
+Unlocker is a simple slider library for [SwiftUI](https://developer.apple.com/xcode/swiftui/), which can look like `Slide to Unlock`.
+
+You can use this library easily wherever you want, such as `Slide to Purchase` for the payment UX.
 
 <center>
 <img src="./Docs/preview1.gif" width="260">
