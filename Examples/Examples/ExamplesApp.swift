@@ -12,6 +12,7 @@ struct ExamplesApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
+                
                 Default()
                     .tabItem {
                         Text("Default")
@@ -21,6 +22,12 @@ struct ExamplesApp: App {
                     .tabItem {
                         Text("Rounded Rectangle")
                     }
+                
+                CapsuleShape()
+                    .tabItem {
+                        Text("Capsule")
+                    }
+                
             }
         }
     }
