@@ -9,21 +9,25 @@ public struct Unlocker: View {
     private let minPercentage: Float
     private let threshold: Float
     
+    // Color
+    private let foregroundColor: Color
+    
     // Action
     private let completion: (() -> Void)?
-    
     
     public init(
         disabled: Binding<Bool>,
         percentage: Binding<Float>,
         minPercentage: Float = 25.0,
         threshold: Float = 50.0,
+        foregroundColor: Color = .primary,
         completion: (() -> Void)? = nil
     ) {
         self._disabled = disabled
         self._percentage = percentage
         self.minPercentage = minPercentage
         self.threshold = threshold
+        self.foregroundColor = foregroundColor
         self.completion = completion
     }
     
@@ -36,6 +40,7 @@ public struct Unlocker: View {
                 // Rectangle Slider
                 Rectangle()
                     .frame(width: abs(geo.size.width * CGFloat(percentage / 100)))
+                    .foregroundColor(foregroundColor)
             } //: Z
             .contentShape(Path(CGRect(origin: .zero, size: geo.size)))
             .gesture(

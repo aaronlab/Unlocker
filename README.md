@@ -36,7 +36,7 @@ https://github.com/aaronLab/Unlocker
 - Put `Unlocker` with its parameters into the parenthesis.
 - Declare:
   ```Swift
-  Unlocker(disabled: Binding<Bool>, percentage: Binding<Float>, minPercentage: Float = 25.0, threshold: Float = 50.0, completion: (() -> Void)? = nil)
+  Unlocker(disabled: Binding<Bool>, percentage: Binding<Float>, minPercentage: Float = 25.0, threshold: Float = 50.0, foregroundColor: Color = .primary, completion: (() -> Void)? = nil)
   ```
 
 ## Parameter
@@ -64,6 +64,10 @@ https://github.com/aaronLab/Unlocker
   - This is the threshold for the action.
   - When the user swipe the slider more than the percentage of this value in the screen, the action closure will be triggered.
 
+- `foregroundColor: Color = .primary,`:
+
+  - This is the foreground color of the slider
+
 - `completion: (() -> Void)? = nil`:
   - This closure action will be triggered by the slider.
 
@@ -80,7 +84,7 @@ struct CapsuleShape: View {
 
     var body: some View {
 
-        Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 0.0, threshold: 50.0) {
+        Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 0.0, threshold: 50.0, foregroundColor: .red) {
             // Your task here
             print("Process Started")
 

@@ -15,7 +15,7 @@ struct Default: View {
     
     var body: some View {
         
-        Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 0.0, threshold: 50.0) {
+        Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 0.0, threshold: 50.0, foregroundColor: .red) {
             // Your task here
             print("Process Started")
             
