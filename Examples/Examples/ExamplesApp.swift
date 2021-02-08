@@ -11,7 +11,17 @@ import SwiftUI
 struct ExamplesApp: App {
     var body: some Scene {
         WindowGroup {
-            Default()
+            TabView {
+                Default()
+                    .tabItem {
+                        Text("Default")
+                    }
+                
+                RoundedRect()
+                    .tabItem {
+                        Text("Rounded Rectangle")
+                    }
+            }
         }
     }
 }
