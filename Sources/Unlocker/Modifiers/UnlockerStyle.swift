@@ -10,28 +10,28 @@ import SwiftUI
 public struct UnlockerStyle {
     
     /// Default Empty Slider Style
-    public struct Default: ViewModifier {
+    public struct DefaultSlider: ViewModifier {
         public func body(content: Content) -> some View {
             content
         }
     }
     
     /// Left Text Slider Style
-    public struct LeftText: ViewModifier {
+    public struct LeftTextSlider: ViewModifier {
         public func body(content: Content) -> some View {
             content
         }
     }
     
     /// Right Text Slider Style
-    public struct RightText: ViewModifier {
+    public struct RightTextSlider: ViewModifier {
         public func body(content: Content) -> some View {
             content
         }
     }
     
     /// Custome View Slider Style
-    public struct CustomView: ViewModifier {
+    public struct CustomViewSlider: ViewModifier {
         public func body(content: Content) -> some View {
             content
         }
