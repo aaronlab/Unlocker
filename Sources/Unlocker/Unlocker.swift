@@ -61,6 +61,8 @@ public struct Unlocker: View {
     
 }
 
+// MARK: - Slider Gestures
+
 extension Unlocker {
     
     // Slider OnChange
@@ -135,6 +137,22 @@ extension Unlocker {
             }
             
         }
+    }
+    
+}
+
+// MARK: - Slider Styles
+
+extension Unlocker {
+    
+    /// Slider Styles
+    public enum SliderStyle {
+        case `default`, leftText, rightText, customView
+    }
+    
+    /// Slider Styles
+    public func sliderStyle(_ style: SliderStyle) -> some View {
+        return self.body
     }
     
 }
