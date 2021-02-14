@@ -123,10 +123,6 @@ extension Unlocker {
                 }
             }
             
-//            // Reset disabled
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                disabled = false
-//            }
         } else {
             
             // Reset slider
