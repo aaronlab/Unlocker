@@ -2,7 +2,7 @@
 ![Platform: iOS 13+](https://img.shields.io/badge/platform-iOS%2013%2B-blue?style=flat&logo=apple)
 ![SwiftPM compatible](https://img.shields.io/badge/SPM-compatible-brightgreen?style=flat&logo=swift)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey?style=flat)](https://github.com/aaronLab/SweetCardScanner/blob/main/LICENSE)
-[![Release version](https://img.shields.io/badge/release-v1.0.0.alpha.1-blue)](https://github.com/aaronLab/SweetCardScanner/releases)
+[![Release version](https://img.shields.io/badge/release-v1.0.0.beta.1-blue)](https://github.com/aaronLab/SweetCardScanner/releases)
 
 # Unlocker
 
@@ -38,14 +38,21 @@ https://github.com/aaronLab/Unlocker
 - Put `Unlocker` with its parameters in the parenthesis.
 - Declare:
   ```Swift
-  Unlocker(disabled: Binding<Bool>, percentage: Binding<Float>, minPercentage: Float = 25.0, threshold: Float = 50.0, foregroundColor: Color = .primary, completion: (() -> Void)? = nil)
+  Unlocker<Content>: View where Content: View(
+      disabled: Binding<Bool>,
+      percentage: Binding<Float>,
+      minPercentage: Float = 25.0,
+      threshold: Float = 50.0,
+      @ViewBuilder content: @escaping (_ sliderWidth: CGFloat) -> Content,
+      completion: (() -> Void)? = nil
+  )
   ```
 
 ## Parameter
 
 - `disabled: Binding<Bool>`:
 
-  - This is a parameter to prevent the double or multiple actions of the slider after the slider is fully swiped.
+  - This is a flag to `prevent the slider works multiple times` during the process.
   - Since the slider will be "disabled" after fully swiped, you will need to toggle "disabled" parameter at the end of your process to make the slider activated again.
   - Or if you don't want to make it back, just leave it there.
   - Or if you don't want to make it disabled ever, just use `.constant(false)`
@@ -57,21 +64,24 @@ https://github.com/aaronLab/Unlocker
 
 - `minPercentage: Float = 25.0`:
 
+  - This is the minimum percentage. When you set this not zero, the slider would be filled the percentage that you set.
   - This is a kind of placeholders for the slider.
   - You can make it a bit filled by using this parameter.
   - 25.0 means 25% of the slider will be filled.
 
 - `threshold: Float = 50.0`:
 
-  - This is the threshold for the action.
+  - This is the threshold where the completion would start. 
+  - Also this will make your slider disabled to prevent the slider works multiple times during the process.
   - When the user swipe the slider more than the percentage of this value in the screen, the action closure will be triggered.
 
-- `foregroundColor: Color = .primary,`:
+- `content: Content`:
 
-  - This is the foreground color of the slider
+  - This is the custom view inside of the slider.
 
 - `completion: (() -> Void)? = nil`:
   - This closure action will be triggered by the slider.
+  - The action which will be run the percentage of the progress of the slider has passed the threshold like a completion.
 
 ## Example
 
@@ -80,40 +90,96 @@ import SwiftUI
 import Unlocker
 
 struct CapsuleShape: View {
-
+    
     @State private var disabled: Bool = false
     @State private var percentage: Float = 0.0
-
+    
     var body: some View {
-
-        Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 0.0, threshold: 50.0, foregroundColor: .red) {
-            // Your task here
-            print("Process Started")
-
-            /*
-             Since the slider will be "disabled" after fully swiped,
-             you will need to toggle "disabled" parameter at the end of your process,
-             so that you will be able to make the slider activated again.
-             Or if you don't want to make it back,
-             just leave it there.
-             Or if you don't want to make it disabled ever,
-             just use `.constant(false)`
-             */
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                print("Process Done")
-                disabled.toggle()
+        
+        ZStack {
+            
+            Color.gray
+            
+            // Background
+            HStack {
+                Spacer(minLength: 0)
+                Text("Slide to Unlock")
+                Image(systemName: "chevron.right.2")
+            } //: H
+            .padding(.trailing)
+            
+            // Slider
+            Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 25, threshold: 50.0) { sliderWidth in
+                ZStack {
+                    
+                    // Slider Background
+                    Rectangle()
+                        .foregroundColor(.primary)
+                    
+                    /*
+                     You can choose when you are going to show your content
+                     with the escaping parameter(CGFloat), which is the slider's width.
+                     */
+                    if sliderWidth > UIScreen.main.bounds.width / 3.0 {
+                        
+                        // Slider Content
+                        HStack {
+                            
+                            Text("Slide to Unlock")
+                                .foregroundColor(.blue)
+                                .lineLimit(1)
+                                .padding(.leading)
+                            
+                            Image(systemName: "chevron.right.2")
+                                .foregroundColor(.blue)
+                            
+                            Spacer(minLength: 0)
+                            
+                        } //: H
+                        
+                    } else {
+                        
+                        /*
+                         Placeholder Image before slide
+                         */
+                        Image(systemName: "chevron.right.2")
+                            .foregroundColor(.blue)
+                        
+                    }
+                    
+                }
+            } completion: {
+                // Your task here
+                print("CapsuleShape Process Started")
+                
+                /*
+                 Since the slider will be "disabled" after fully swiped,
+                 you will need to toggle "disabled" parameter at the end of your process,
+                 so that you will be able to make the slider activated again.
+                 Or if you don't want to make it back,
+                 just leave it there.
+                 Or if you don't want to make it disabled ever,
+                 just use `.constant(false)`
+                 */
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    print("CapsuleShape Process Done")
+                    disabled.toggle()
+                }
             }
-
-        }
-        .background(Color.gray)
+            
+            
+        } //: Z
+        .font(.system(size: 12))
+        .frame(height: 60)
         /*
-         You can smiply make the slider capsule shape
+         You can smiply make the slider RoundedRectangle
          with `.clipShape(Capsule())`
          */
         .clipShape(Capsule())
-        .frame(height: 60)
         .padding()
+        
     }
+    
 }
 ```
 
