@@ -28,7 +28,7 @@ struct Default: View {
             .padding(.trailing)
             
             // Slider
-            Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 25, threshold: 50.0) { sliderWidth in
+            Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 25, threshold: 50.0, duration: 0.5) { sliderWidth in
                 ZStack {
                     
                     // Slider Background

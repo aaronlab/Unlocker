@@ -2,7 +2,7 @@
 ![Platform: iOS 13+](https://img.shields.io/badge/platform-iOS%2013%2B-blue?style=flat&logo=apple)
 ![SwiftPM compatible](https://img.shields.io/badge/SPM-compatible-brightgreen?style=flat&logo=swift)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey?style=flat)](https://github.com/aaronLab/SweetCardScanner/blob/main/LICENSE)
-[![Release version](https://img.shields.io/badge/release-v1.0.0.beta.1-blue)](https://github.com/aaronLab/SweetCardScanner/releases)
+[![Release version](https://img.shields.io/badge/release-v1.0.0.beta.2-blue)](https://github.com/aaronLab/SweetCardScanner/releases)
 
 # Unlocker
 
@@ -43,6 +43,7 @@ https://github.com/aaronLab/Unlocker
       percentage: Binding<Float>,
       minPercentage: Float = 25.0,
       threshold: Float = 50.0,
+      duration: Double = 0.3,
       @ViewBuilder content: @escaping (_ sliderWidth: CGFloat) -> Content,
       completion: (() -> Void)? = nil
   )
@@ -53,7 +54,7 @@ https://github.com/aaronLab/Unlocker
 - `disabled: Binding<Bool>`:
 
   - This is a flag to `prevent the slider works multiple times` during the process.
-  - Since the slider will be "disabled" after fully swiped, you will need to toggle "disabled" parameter at the end of your process to make the slider activated again.
+  - Since the slider will be "disabled" after fully swiped, `you will need to toggle "disabled"` parameter at the end of your process to make the slider activated again.
   - Or if you don't want to make it back, just leave it there.
   - Or if you don't want to make it disabled ever, just use `.constant(false)`
 
@@ -64,24 +65,33 @@ https://github.com/aaronLab/Unlocker
 
 - `minPercentage: Float = 25.0`:
 
-  - This is the minimum percentage. When you set this not zero, the slider would be filled the percentage that you set.
-  - This is a kind of placeholders for the slider.
+  - The default value is `25.0`
+  - This is `the minimum percentage`. When you set this not zero, the slider would be filled the percentage that you set.
+  - This is a kind of `placeholders` for the slider.
   - You can make it a bit filled by using this parameter.
   - 25.0 means 25% of the slider will be filled.
 
 - `threshold: Float = 50.0`:
 
-  - This is the threshold where the completion would start. 
-  - Also this will make your slider disabled to prevent the slider works multiple times during the process.
+  - The default value is `50.0`
+  - This is the `threshold` where `the completion would start`. 
+  - Also this will make your `slider disabled` to `prevent the slider works multiple times during the process`.
   - When the user swipe the slider more than the percentage of this value in the screen, the action closure will be triggered.
+  
+- `duration: Double = 0.3`:
+
+  - The default value is `0.3`
+  - This is the duration for the `animation` to make `the slider fully filled`.
 
 - `content: Content`:
 
   - This is the custom view inside of the slider.
 
 - `completion: (() -> Void)? = nil`:
-  - This closure action will be triggered by the slider.
-  - The action which will be run the percentage of the progress of the slider has passed the threshold like a completion.
+
+  - The default value is `nil`
+  - This `closure action` will be triggered by the slider.
+  - The action which `will be run` the percentage of the progress of the slider has passed the threshold like a completion.
 
 ## Example
 
