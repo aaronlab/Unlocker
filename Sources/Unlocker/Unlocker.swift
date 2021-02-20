@@ -13,6 +13,8 @@ public struct Unlocker<Content>: View where Content: View {
     private let minPercentage: Float
     /// This is the threshold where the completion would start. Also this will make your slider disabled to prevent the slider works multiple times during the process.
     private let threshold: Float
+    /// This is the duration for the animation to make the slider fully filled. The default value is 0.3 second.
+    private let duration: Double
     
     /// This is the custom view inside of the slider.
     private let content: (_ sliderWidth: CGFloat) -> Content
@@ -26,6 +28,7 @@ public struct Unlocker<Content>: View where Content: View {
     ///   - percentage: This is the percentage of the slider.
     ///   - minPercentage: This is the minimum percentage. When you set this not zero, the slider would be filled the percentage that you set.
     ///   - threshold: This is the threshold where the completion would start. Also this will make your slider disabled to prevent the slider works multiple times during the process.
+    ///   - duration: /// This is the duration for the animation to make the slider fully filled. The default value is 0.3 second.
     ///   - content: This is the custom view inside of the slider.
     ///   - completion: This is the completion, which will be run the percentage of the progress of the slider has passed the threshold.
     public init(
@@ -33,6 +36,7 @@ public struct Unlocker<Content>: View where Content: View {
         percentage: Binding<Float>,
         minPercentage: Float = 25.0,
         threshold: Float = 50.0,
+        duration: Double = 0.3,
         @ViewBuilder content: @escaping (_ sliderWidth: CGFloat) -> Content,
         completion: (() -> Void)? = nil
     ) {
@@ -40,6 +44,7 @@ public struct Unlocker<Content>: View where Content: View {
         self._percentage = percentage
         self.minPercentage = minPercentage
         self.threshold = threshold
+        self.duration = duration
         self.content = content
         self.completion = completion
     }
@@ -131,18 +136,18 @@ extension Unlocker {
             
             // Fill the slider
             DispatchQueue.main.async {
-                withAnimation(.easeOut(duration: 0.3)) {
+                withAnimation(.easeOut(duration: duration)) {
                     percentage = 100
                 }
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                 completion?()
             }
             
             // Reset slider
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.easeOut(duration: 0.3)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration + 0.2) {
+                withAnimation(.easeOut(duration: duration)) {
                     percentage = minPercentage
                 }
             }
