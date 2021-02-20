@@ -1,37 +1,48 @@
 import SwiftUI
 
-public struct Unlocker: View {
+/// Unlocker is a simple slider library for SwiftUI, which can look like `Slide to Unlock`.
+/// You can use this library easily wherever you want, such as `Slide to Purchase` for the payment UX.
+public struct Unlocker<Content>: View where Content: View {
     
-    // Disable
+    /// This is a flag to `prevent the slider works multiple times` during the process.
     @Binding var disabled: Bool
-    // Percentage
+    /// This is the percentage of the slider.
     @Binding var percentage: Float
+    
+    /// This is the minimum percentage. When you set this not zero, the slider would be filled the percentage that you set.
     private let minPercentage: Float
+    /// This is the threshold where the completion would start. Also this will make your slider disabled to prevent the slider works multiple times during the process.
     private let threshold: Float
     
-    // Color
-    private let foregroundColor: Color
+    /// This is the custom view inside of the slider.
+    private let content: (_ sliderWidth: CGFloat) -> Content
     
-    // Action
+    /// This is the completion, which will be run the percentage of the progress of the slider has passed the threshold.
     private let completion: (() -> Void)?
     
+    /// Unlocker
+    /// - Parameters:
+    ///   - disabled: This is a flag to `prevent the slider works multiple times` during the process.
+    ///   - percentage: This is the percentage of the slider.
+    ///   - minPercentage: This is the minimum percentage. When you set this not zero, the slider would be filled the percentage that you set.
+    ///   - threshold: This is the threshold where the completion would start. Also this will make your slider disabled to prevent the slider works multiple times during the process.
+    ///   - content: This is the custom view inside of the slider.
+    ///   - completion: This is the completion, which will be run the percentage of the progress of the slider has passed the threshold.
     public init(
         disabled: Binding<Bool>,
         percentage: Binding<Float>,
         minPercentage: Float = 25.0,
         threshold: Float = 50.0,
-        foregroundColor: Color = .primary,
+        @ViewBuilder content: @escaping (_ sliderWidth: CGFloat) -> Content,
         completion: (() -> Void)? = nil
     ) {
         self._disabled = disabled
         self._percentage = percentage
         self.minPercentage = minPercentage
         self.threshold = threshold
-        self.foregroundColor = foregroundColor
+        self.content = content
         self.completion = completion
     }
-    
-    @State private var sliderStyle: SliderStyle = .default
     
     public var body: some View {
         GeometryReader { geo in
@@ -39,12 +50,12 @@ public struct Unlocker: View {
             // Slider
             ZStack(alignment: .leading) {
                 
-                // Rectangle Slider
-                switch sliderStyle {
-                default:
-                    Rectangle()
-                        .modifier(SliderModifier(width: abs(geo.size.width * CGFloat(percentage / 100)), foregroundColor: foregroundColor))
-                }
+                let sliderWidth = abs(geo.size.width * CGFloat(percentage / 100))
+                
+                // Custom View
+                content(sliderWidth)
+                    .frame(width: sliderWidth)
+                
             } //: Z
             .contentShape(Path(CGRect(origin: .zero, size: geo.size)))
             .gesture(
@@ -59,8 +70,13 @@ public struct Unlocker: View {
         } //: G
         .disabled(disabled)
         .onAppear {
-            percentage = minPercentage
+            initPercentage()
         }
+    }
+    
+    /// Init Percentage
+    private func initPercentage() {
+        percentage = minPercentage
     }
     
 }
@@ -69,7 +85,11 @@ public struct Unlocker: View {
 
 extension Unlocker {
     
-    // Slider OnChange
+    
+    /// Drag gesture onChanged for the slider
+    /// - Parameters:
+    ///   - value: The gesture value
+    ///   - geoProxy: The geometry proxy of the slider
     private func onChanged(with value: DragGesture.Value, geoProxy: GeometryProxy) {
         
         // Dragged to the right
@@ -103,7 +123,7 @@ extension Unlocker {
         }
     }
     
-    // After released
+    /// Drag gesture onEnded for the slider
     private func onEnded() {
         if percentage > threshold {
             
@@ -136,31 +156,6 @@ extension Unlocker {
                 }
             }
             
-        }
-    }
-    
-}
-
-// MARK: - Slider Styles
-
-extension Unlocker {
-    
-    /// Slider Styles
-    public enum SliderStyle {
-        case `default`, leftText, rightText, customView
-    }
-    
-    /// Slider Styles
-    public func sliderStyle(_ style: SliderStyle) -> some View {
-        switch style {
-        case .default:
-            return body
-        case .leftText:
-            return body
-        case .rightText:
-            return body
-        case .customView:
-            return body
         }
     }
     
