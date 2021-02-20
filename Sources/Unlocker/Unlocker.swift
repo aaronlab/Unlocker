@@ -31,6 +31,8 @@ public struct Unlocker: View {
         self.completion = completion
     }
     
+    @State private var sliderStyle: SliderStyle = .default
+    
     public var body: some View {
         GeometryReader { geo in
             
@@ -38,9 +40,11 @@ public struct Unlocker: View {
             ZStack(alignment: .leading) {
                 
                 // Rectangle Slider
-                Rectangle()
-                    .frame(width: abs(geo.size.width * CGFloat(percentage / 100)))
-                    .foregroundColor(foregroundColor)
+                switch sliderStyle {
+                default:
+                    Rectangle()
+                        .modifier(SliderModifier(width: abs(geo.size.width * CGFloat(percentage / 100)), foregroundColor: foregroundColor))
+                }
             } //: Z
             .contentShape(Path(CGRect(origin: .zero, size: geo.size)))
             .gesture(
@@ -148,7 +152,16 @@ extension Unlocker {
     
     /// Slider Styles
     public func sliderStyle(_ style: SliderStyle) -> some View {
-        return self.body
+        switch style {
+        case .default:
+            return body
+        case .leftText:
+            return body
+        case .rightText:
+            return body
+        case .customView:
+            return body
+        }
     }
     
 }
