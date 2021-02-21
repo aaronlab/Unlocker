@@ -83,9 +83,9 @@ https://github.com/aaronLab/Unlocker
   - The default value is `0.3`
   - This is the duration for the `animation` to make `the slider fully filled`.
 
-- `content: Content`:
+- `content: (CGFloat) -> Content`:
 
-  - This is the custom view inside of the slider.
+  - This is the custom view inside of the slider, which escapes with the width of the slider drag gesture.
 
 - `completion: (() -> Void)? = nil`:
 
