@@ -2,7 +2,7 @@
 ![Platform: iOS 13+](https://img.shields.io/badge/platform-iOS%2013%2B-blue?style=flat&logo=apple)
 ![SwiftPM compatible](https://img.shields.io/badge/SPM-compatible-brightgreen?style=flat&logo=swift)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey?style=flat)](https://github.com/aaronLab/SweetCardScanner/blob/main/LICENSE)
-[![Release version](https://img.shields.io/badge/release-v1.0.0.beta.2-blue)](https://github.com/aaronLab/SweetCardScanner/releases)
+[![Release version](https://img.shields.io/badge/release-v1.0.0-blue)](https://github.com/aaronLab/SweetCardScanner/releases)
 
 # Unlocker
 
@@ -74,10 +74,10 @@ https://github.com/aaronLab/Unlocker
 - `threshold: Float = 50.0`:
 
   - The default value is `50.0`
-  - This is the `threshold` where `the completion would start`. 
+  - This is the `threshold` where `the completion would start`.
   - Also this will make your `slider disabled` to `prevent the slider works multiple times during the process`.
   - When the user swipe the slider more than the percentage of this value in the screen, the action closure will be triggered.
-  
+
 - `duration: Double = 0.3`:
 
   - The default value is `0.3`
@@ -100,16 +100,16 @@ import SwiftUI
 import Unlocker
 
 struct CapsuleShape: View {
-    
+
     @State private var disabled: Bool = false
     @State private var percentage: Float = 0.0
-    
+
     var body: some View {
-        
+
         ZStack {
-            
+
             Color.gray
-            
+
             // Background
             HStack {
                 Spacer(minLength: 0)
@@ -117,51 +117,51 @@ struct CapsuleShape: View {
                 Image(systemName: "chevron.right.2")
             } //: H
             .padding(.trailing)
-            
+
             // Slider
             Unlocker(disabled: $disabled, percentage: $percentage, minPercentage: 25, threshold: 50.0) { sliderWidth in
                 ZStack {
-                    
+
                     // Slider Background
                     Rectangle()
                         .foregroundColor(.primary)
-                    
+
                     /*
                      You can choose when you are going to show your content
                      with the escaping parameter(CGFloat), which is the slider's width.
                      */
                     if sliderWidth > UIScreen.main.bounds.width / 3.0 {
-                        
+
                         // Slider Content
                         HStack {
-                            
+
                             Text("Slide to Unlock")
                                 .foregroundColor(.blue)
                                 .lineLimit(1)
                                 .padding(.leading)
-                            
+
                             Image(systemName: "chevron.right.2")
                                 .foregroundColor(.blue)
-                            
+
                             Spacer(minLength: 0)
-                            
+
                         } //: H
-                        
+
                     } else {
-                        
+
                         /*
                          Placeholder Image before slide
                          */
                         Image(systemName: "chevron.right.2")
                             .foregroundColor(.blue)
-                        
+
                     }
-                    
+
                 }
             } completion: {
                 // Your task here
                 print("CapsuleShape Process Started")
-                
+
                 /*
                  Since the slider will be "disabled" after fully swiped,
                  you will need to toggle "disabled" parameter at the end of your process,
@@ -176,8 +176,8 @@ struct CapsuleShape: View {
                     disabled.toggle()
                 }
             }
-            
-            
+
+
         } //: Z
         .font(.system(size: 12))
         .frame(height: 60)
@@ -187,9 +187,9 @@ struct CapsuleShape: View {
          */
         .clipShape(Capsule())
         .padding()
-        
+
     }
-    
+
 }
 ```
 
